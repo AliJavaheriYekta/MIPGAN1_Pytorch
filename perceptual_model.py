@@ -12,6 +12,7 @@ class VGG16_for_Perceptual(torch.nn.Module):
         self.slice1=torch.nn.Sequential()
         self.slice2=torch.nn.Sequential()
         self.slice3=torch.nn.Sequential()
+        self.slice4=torch.nn.Sequential()
 
         for x in range(n_layers[0]):#relu1_1
             self.slice0.add_module(str(x),vgg_pretrained_features[x])
@@ -21,6 +22,8 @@ class VGG16_for_Perceptual(torch.nn.Module):
             self.slice2.add_module(str(x),vgg_pretrained_features[x])
         for x in range(n_layers[2],n_layers[3]):#relu4_2
             self.slice3.add_module(str(x),vgg_pretrained_features[x])
+        for x in range(n_layers[3],n_layers[4]):#relu4_2
+            self.slice4.add_module(str(x),vgg_pretrained_features[x])
 
         
         if not requires_grad:
@@ -34,7 +37,8 @@ class VGG16_for_Perceptual(torch.nn.Module):
         h1=self.slice1(h0)
         h2=self.slice2(h1)
         h3=self.slice3(h2)
+        h4=self.slice3(h3)
 
-        return h0,h1,h2,h3
+        return h0,h1,h2,h3,h4
 
 
