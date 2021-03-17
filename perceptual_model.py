@@ -4,7 +4,7 @@ import torch.nn as nn
 
 
 class VGG16_for_Perceptual(torch.nn.Module):
-    def __init__(self,requires_grad=False,n_layers=[2,4,14,21]):
+    def __init__(self,requires_grad=False,n_layers=[2,4,9,16,21]):
         super(VGG16_for_Perceptual,self).__init__()
         vgg_pretrained_features=models.vgg16(pretrained=True).features 
 
