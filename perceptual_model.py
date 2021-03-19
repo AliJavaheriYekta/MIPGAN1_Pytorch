@@ -4,7 +4,7 @@ import torch.nn as nn
 
 
 class VGG16_for_Perceptual(torch.nn.Module):
-    def __init__(self,requires_grad=False,n_layers=[2,4,9,16,21]):
+    def __init__(self,requires_grad=False,n_layers=[2,4,9,14,21]):
         super(VGG16_for_Perceptual,self).__init__()
         vgg_pretrained_features=models.vgg16(pretrained=True).features 
 
@@ -23,8 +23,7 @@ class VGG16_for_Perceptual(torch.nn.Module):
         for x in range(n_layers[2],n_layers[3]):#relu4_2
             self.slice3.add_module(str(x),vgg_pretrained_features[x])
         for x in range(n_layers[3],n_layers[4]):#relu4_2
-            self.slice4.add_module(str(x),vgg_pretrained_features[x])
-
+            self.slice3.add_module(str(x),vgg_pretrained_features[x])
         
         if not requires_grad:
             for param in self.parameters():
@@ -37,7 +36,7 @@ class VGG16_for_Perceptual(torch.nn.Module):
         h1=self.slice1(h0)
         h2=self.slice2(h1)
         h3=self.slice3(h2)
-        h4=self.slice3(h3)
+        h4=self.slice4(h3)
 
         return h0,h1,h2,h3,h4
 
