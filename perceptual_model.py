@@ -5,7 +5,7 @@ from torchvision import models
 class VGG16_for_Perceptual(torch.nn.Module):
     def __init__(self,requires_grad=False,n_layers=None,device='cpu'):
         super(VGG16_for_Perceptual,self).__init__()
-        vgg_pretrained_features=models.vgg16(pretrained=True).features
+        vgg_pretrained_features=models.vgg16(pretrained=True).features.to(device)
 
         self.slices = []
         pre_layer = 0
