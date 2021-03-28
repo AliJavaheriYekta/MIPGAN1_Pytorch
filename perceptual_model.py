@@ -4,16 +4,18 @@ import torch.nn as nn
 
 
 class VGG16_for_Perceptual(torch.nn.Module):
-    def __init__(self,requires_grad=False,n_layers=[2,4,9,16]):
+    def __init__(self,requires_grad=False,n_layers=None,device='cpu'):
         super(VGG16_for_Perceptual,self).__init__()
-        vgg_pretrained_features=models.vgg16(pretrained=True).features 
+        vgg_pretrained_features=models.vgg16(pretrained=True).features.to(device)
 
         self.slices = []
+        pre_layer = 0
         for i in n_layers:
             slice = torch.nn.Sequential()
-            for j in range(i):
+            for j in range(pre_layer,i):
                 slice.add_module(str(j),vgg_pretrained_features[j])
             self.slices.append(slice)
+            pre_layer = i
         
         if not requires_grad:
             for param in self.parameters():
@@ -26,6 +28,6 @@ class VGG16_for_Perceptual(torch.nn.Module):
             x = slice(x)
             self.results.append(x)
 
-        return self.results
+        return self.results     
 
 
